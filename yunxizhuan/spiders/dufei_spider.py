@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy.linkextractors import LinkExtractor
 import re
-import sys
 
 
 class DuFeiSpider(scrapy.Spider):

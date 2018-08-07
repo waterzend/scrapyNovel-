@@ -2,6 +2,7 @@
 import pymysql
 from docx import Document
 import re
+from docx.shared import Pt
 
 
 def clear(html):
@@ -13,23 +14,32 @@ def clear(html):
     return "".join(clear)
 
 
-db = pymysql.connect("127.0.0.1", "root", "root", "yunxizhuan", charset='utf8')
-cursor = db.cursor()
-sql = "select * from content "
-document = Document()
-document.add_heading(u'芸汐传', 0)
-try:
-    cursor.execute(sql)
-    print(cursor.rownumber)
-    result = cursor.fetchone()
-    while result != None:
-        title = result[1]
-        document.add_heading(title, 1)
-        content = clear(result[2])
-        paragraph = document.add_paragraph(content)
+def write_doc(i):
+    db = pymysql.connect("127.0.0.1", "root", "root", "yunxizhuan", charset='utf8')
+    cursor = db.cursor()
+    sql = "select * from content limit " + str(i*300) + ",300 "
+    print(sql)
+    document = Document()
+    document.add_heading(u'芸汐传', 0)
+    try:
+        cursor.execute(sql)
         result = cursor.fetchone()
+        while result != None:
+            title = result[1]
+            document.add_heading(title, 1)
+            content = clear(result[2])
+            font_name = u'宋体'
+            paragraph = document.add_paragraph()
+            run = paragraph.add_run(content)
+            run.font.size = Pt(13)
+            run.font.name = font_name
+            result = cursor.fetchone()
 
-except:
-    print("error")
-document.save('demoyunxi.docx')
-db.close()
+    except:
+        print("error")
+    document.save('yunxi' + str(i) + '.docx')
+    db.close()
+
+
+for i in range(0, 5):
+    write_doc(i)
