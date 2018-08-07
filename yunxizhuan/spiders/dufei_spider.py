@@ -18,7 +18,6 @@ class DuFeiSpider(scrapy.Spider):
         match = pattern.findall(next_page)
         id = pattern.findall(title[0])[0]
         yield {'id': id, 'title': title[0], 'content': content[0]}
-        # yield {'id': u'2', 'title': u'title', 'content': u'sbc'}
         # 有下一页继续
         if match:
             yield response.follow(next_page, self.parse)

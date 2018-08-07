@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 import pymysql
 from docx import Document
-from docx.shared import Pt
-from docx.oxml.ns import qn
-from docx.shared import Inches
 import re
 
 
